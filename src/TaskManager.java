@@ -9,10 +9,13 @@ public class TaskManager {
     private ArrayList<Task> incompleteTasks = new ArrayList<>();
 
     private final String Q_WHAT_TO_DO = "What would you like to do?";
+    private final String Q_WHAT_TASK_TO_REMOVE = "What task would you like to remove?";
+    private final String Q_WHAT_TASK_TO_COMPLETE = "What task would you like to mark as complete?";
 
     private final String ERR_MUST_BE_A_NUMBER = "Error: Entry must be a number.";
     private final String ERR_NO_SUCH_OPTION = "Error: There is no such option.";
     private final String ERR_NO_TASKS = "Error: There are no tasks.";
+    private final String ERR_TASK_DOES_NOT_EXIST = "Error: The task does not exist.";
 
     private final String NEW_LINE = "\n";
     private final String ADD_TASK = "Add task:";
@@ -64,11 +67,45 @@ public class TaskManager {
     }
 
     private void removeTask() {
-
+        if (tasks.size() == 0) {
+            System.out.println(ERR_NO_TASKS + NEW_LINE);
+        } else {
+            listTasks(false);
+            int selection = inputInt(Q_WHAT_TASK_TO_REMOVE, scanner);
+            try {
+                String taskName = tasks.get(selection - 1).getName();
+                tasks.remove(selection - 1);
+                for (Task task : incompleteTasks) {
+                    if (task.getName().equals(taskName)) {
+                        incompleteTasks.remove(task);
+                    }
+                }
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println(ERR_TASK_DOES_NOT_EXIST + NEW_LINE);
+                removeTask();
+            }
+        }
     }
 
     private void markTaskComplete() {
-
+        if (incompleteTasks.size() == 0) {
+            System.out.println(ERR_NO_TASKS + NEW_LINE);
+        } else {
+            listTasks(true);
+            int selection = inputInt(Q_WHAT_TASK_TO_COMPLETE, scanner);
+            try {
+                String taskName = incompleteTasks.get(selection - 1).getName();
+                incompleteTasks.remove(selection - 1);
+                for (Task task : tasks) {
+                    if (task.getName().equals(taskName)) {
+                        task.markCompleted();
+                    }
+                }
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println(ERR_TASK_DOES_NOT_EXIST + NEW_LINE);
+                markTaskComplete();
+            }
+        }
     }
 
     private void listTasks(boolean onlyIncomplete) {
