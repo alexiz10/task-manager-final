@@ -11,6 +11,7 @@ public class TaskManager {
     private final String Q_WHAT_TO_DO = "What would you like to do?";
 
     private final String ERR_MUST_BE_A_NUMBER = "Error: Entry must be a number.";
+    private final String ERR_NO_SUCH_OPTION = "Error: There is no such option.";
 
     private final String NEW_LINE = "\n";
 
@@ -26,11 +27,46 @@ public class TaskManager {
             NEW_LINE + Q_WHAT_TO_DO;
 
     public void start() {
-
+        printMenu();
     }
 
     private void printMenu() {
+        int selection = inputInt(MAIN_MENU, scanner);
+        while (selection != 9) {
+            switch (selection) {
+                case 1:
+                    addTask();
+                    break;
+                case 2:
+                    removeTask();
+                    break;
+                case 3:
+                    markTaskComplete();
+                    break;
+                case 4:
+                    listTasks();
+                    break;
+                default:
+                    System.out.println(ERR_NO_SUCH_OPTION);
+            }
+            selection = inputInt(MAIN_MENU, scanner);
+        }
+    }
 
+    private void addTask() {
+
+    }
+
+    private void removeTask() {
+
+    }
+
+    private void markTaskComplete() {
+
+    }
+
+    private void listTasks() {
+        
     }
 
     private int inputInt(String prompt, Scanner scanner) {
