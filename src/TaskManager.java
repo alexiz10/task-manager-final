@@ -12,9 +12,11 @@ public class TaskManager {
 
     private final String ERR_MUST_BE_A_NUMBER = "Error: Entry must be a number.";
     private final String ERR_NO_SUCH_OPTION = "Error: There is no such option.";
+    private final String ERR_NO_TASKS = "Error: There are no tasks.";
 
     private final String NEW_LINE = "\n";
     private final String ADD_TASK = "Add task:";
+    private final String COMPLETE = " (COMPLETE)";
 
     private final String TASK_1 = "1. Add a task";
     private final String TASK_2 = "2. Remove a task";
@@ -46,7 +48,7 @@ public class TaskManager {
                     markTaskComplete();
                     break;
                 case 4:
-                    listTasks();
+                    listTasks(false);
                     break;
                 default:
                     System.out.println(ERR_NO_SUCH_OPTION);
@@ -69,8 +71,33 @@ public class TaskManager {
 
     }
 
-    private void listTasks() {
-
+    private void listTasks(boolean onlyIncomplete) {
+        StringBuilder outputBuilder = new StringBuilder();
+        if (onlyIncomplete) {
+            if (incompleteTasks.size() == 0) {
+                outputBuilder.append(ERR_NO_TASKS + NEW_LINE);
+            } else {
+                for (int i = 0; i < incompleteTasks.size(); i++) {
+                    outputBuilder.append(i + 1).append(". ");
+                    outputBuilder.append(incompleteTasks.get(i).getName());
+                    outputBuilder.append(NEW_LINE);
+                }
+            }
+        } else {
+            if (tasks.size() == 0) {
+                outputBuilder.append(ERR_NO_TASKS + NEW_LINE);
+            } else {
+                for (int i = 0; i < tasks.size(); i++) {
+                    outputBuilder.append(i + 1).append(". ");
+                    outputBuilder.append(tasks.get(i).getName());
+                    if (tasks.get(i).isCompleted()) {
+                        outputBuilder.append(COMPLETE);
+                    }
+                    outputBuilder.append(NEW_LINE);
+                }
+            }
+        }
+        System.out.println(outputBuilder.toString());
     }
 
     private int inputInt(String prompt, Scanner scanner) {
