@@ -14,6 +14,7 @@ public class TaskManager {
     private final String ERR_NO_SUCH_OPTION = "Error: There is no such option.";
 
     private final String NEW_LINE = "\n";
+    private final String ADD_TASK = "Add task:";
 
     private final String TASK_1 = "1. Add a task";
     private final String TASK_2 = "2. Remove a task";
@@ -28,6 +29,7 @@ public class TaskManager {
 
     public void start() {
         printMenu();
+        scanner.close();
     }
 
     private void printMenu() {
@@ -54,7 +56,9 @@ public class TaskManager {
     }
 
     private void addTask() {
-
+        String task = inputString(ADD_TASK, scanner);
+        tasks.add(new Task.TaskBuilder(task, false).build());
+        incompleteTasks.add(tasks.get(tasks.size() - 1));
     }
 
     private void removeTask() {
@@ -66,7 +70,7 @@ public class TaskManager {
     }
 
     private void listTasks() {
-        
+
     }
 
     private int inputInt(String prompt, Scanner scanner) {
